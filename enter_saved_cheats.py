@@ -3,31 +3,17 @@ import time
 import os
 import yaml
 import io
+import win32gui
+import win32con
 
 from pynput.keyboard import Key, Controller
 
 def run():
     process_args = setup_process_args()
+    bring_game_window_to_front_if_enabled(process_args)
     begin_countdown(process_args)
     process_cheats(process_args)
     print("Done!")
-
-
-def begin_countdown(process_args):
-    countdown_in_seconds = process_args.get('countdown_in_seconds')
-    if countdown_in_seconds <= 0:
-        countdown_in_seconds = 10
-
-    seconds_passed = 0
-    print("Open your Sims 3 game window now. The inputs will be automatically typed in...")
-    while seconds_passed <= countdown_in_seconds:
-        if seconds_passed == countdown_in_seconds:
-            print("Starting!")
-            return
-
-        print(countdown_in_seconds - seconds_passed);
-        seconds_passed += 1
-        time.sleep(1)
 
 def setup_process_args():
     input_controller = Controller()
@@ -37,8 +23,52 @@ def setup_process_args():
       'cheats_to_enter': config_data.get('cheats_to_enter'),
       'cheat_entry_delay_in_seconds': config_data.get('cheat_entry_delay_in_seconds'),
       'should_echo_cheat_entry_in_cmd': config_data.get('should_echo_cheat_entry_in_cmd'),
-      'countdown_in_seconds': config_data.get('countdown_in_seconds')
+      'countdown_in_seconds': config_data.get('countdown_in_seconds'),
+      'auto_window_opening_enabled': config_data.get('auto_window_opening_enabled'),
+      'window_name': config_data.get('window_name')
     } 
+
+def bring_game_window_to_front_if_enabled(process_args):
+    if not process_args.get('auto_window_opening_enabled'):
+        return
+    bring_window_to_front(process_args.get('window_name'))
+
+def window_enum_handler(hwnd, top_windows):
+    top_windows.append((hwnd, win32gui.GetWindowText(hwnd)))
+
+def bring_window_to_front(window_name):
+    found_window = find_window_by_name(window_name)
+    if found_window == 'The window could not be found':
+        print('We could not find a game window to open. Ensure there is a window running and open it.')
+        return
+    
+    win32gui.ShowWindow(found_window, win32con.SW_SHOWNORMAL)
+    win32gui.SetForegroundWindow(found_window)
+
+def find_window_by_name(name):
+    top_windows = []
+    win32gui.EnumWindows(window_enum_handler, top_windows)
+    for i in top_windows:
+        if name.lower() in i[1].lower():
+            return i[0]
+    
+    return 'The window could not be found'
+
+def begin_countdown(process_args):
+    countdown_in_seconds = process_args.get('countdown_in_seconds')
+    if countdown_in_seconds <= 0:
+        countdown_in_seconds = 10
+
+    seconds_passed = 0
+    print("Ensure your Sims 3 game window is in focus. The inputs will be automatically typed in...")
+    while seconds_passed <= countdown_in_seconds:
+        if seconds_passed == countdown_in_seconds:
+            print("Starting!")
+            return
+
+        print(countdown_in_seconds - seconds_passed);
+        seconds_passed += 1
+        time.sleep(1)
 
 def get_config_data():
     with open("./cheat_entry_config.yml", 'r') as stream:
