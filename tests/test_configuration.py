@@ -8,7 +8,6 @@ class TestConfigManager(unittest.TestCase):
         self.assertEqual(configuration.countdown_in_seconds, 0)
         self.assertEqual(configuration.delay_between_cheats_in_seconds, 0)
         self.assertTrue(configuration.should_auto_open_window)
-        self.assertTrue(configuration.should_echo_cheat_entry_in_prompt)
         self.assertEqual(configuration.window_name, "")
 
     def test_when_init_given_args_with_allowed_values_then_expect_successful_init_with_given_values(self):
@@ -17,14 +16,12 @@ class TestConfigManager(unittest.TestCase):
             countdown_in_seconds = 5,
             delay_between_cheats_in_seconds = 0.25,
             should_auto_open_window = False,
-            should_echo_cheat_entry_in_prompt = False,
             window_name = "some window"
         )
         self.assertEqual(configuration.cheats_to_enter, ["hello", "world"])
         self.assertEqual(configuration.countdown_in_seconds, 5)
         self.assertEqual(configuration.delay_between_cheats_in_seconds, 0.25)
         self.assertFalse(configuration.should_auto_open_window)
-        self.assertFalse(configuration.should_echo_cheat_entry_in_prompt)
         self.assertEqual(configuration.window_name, "some window")
 
     def test_when_init_given_negative_countdown_in_seconds_arg_then_expect_raise_value_error(self):

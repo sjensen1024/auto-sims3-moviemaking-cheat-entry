@@ -5,8 +5,7 @@ from typing import List
 class Configuration:
     cheats_to_enter: List[str] = field(default_factory=list)
     delay_between_cheats_in_seconds: float = 0
-    should_echo_cheat_entry_in_prompt: bool = True
-    countdown_in_seconds: float = 0
+    countdown_in_seconds: int = 0
     should_auto_open_window: bool = True
     window_name: str = ""
 
