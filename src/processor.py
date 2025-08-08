@@ -1,7 +1,7 @@
 import definitions
 import yaml
-
 from src.configuration import Configuration
+from src.cheat_entry import CheatEntry
 
 class Processor:
     def __init__(self, config_path_relative_to_project_root = 'config\\cheat_entry_config.yml'):
@@ -10,6 +10,13 @@ class Processor:
     def run(self):
         self.configuration = Configuration(**self.__get_configuration_file_attributes())
         self.__print_configuration()
+        # TODO: add implementation for auto window opening and countdown.
+        # Then uncomment the following CheatEntry code.
+        #CheatEntry(
+        #    cheats_to_enter = self.configuration.cheats_to_enter,
+        #    delay_between_cheats_in_seconds = self.configuration.delay_between_cheats_in_seconds,
+        #    should_echo_cheat_entry_in_prompt = self.configuration.should_echo_cheat_entry_in_prompt
+        # ).enter_cheats()
 
     def __setup_configuration_file_path(self, relative_path):
         return definitions.ROOT_DIR + "\\" + relative_path
