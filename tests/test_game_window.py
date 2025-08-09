@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, call, patch
-from src.game_window_manager import GameWindowManager
+from src.game_window import GameWindow
 import win32gui
 
-class TestGameWindowManager(unittest.TestCase):
+class TestGameWindow(unittest.TestCase):
     def setUp(self):
         self.original_show_window = win32gui.ShowWindow
         self.original_set_foreground_window = win32gui.SetForegroundWindow
@@ -18,27 +18,27 @@ class TestGameWindowManager(unittest.TestCase):
         win32gui.GetWindowText = self.original_get_window_text
 
     def test_when_init_given_no_window_name_then_use_default_window_name(self):
-        game_window_manager = GameWindowManager()
+        game_window_manager = GameWindow()
         self.assertEqual(game_window_manager.window_name, 'the sims 3')
 
     def test_when_init_given_window_name_of_none_then_raise_value_error(self):
         with self.assertRaises(ValueError):
-            GameWindowManager(window_name = None)
+            GameWindow(window_name = None)
 
     def test_when_init_given_window_name_of_empty_string_then_raise_value_error(self):
         with self.assertRaises(ValueError):
-            GameWindowManager(window_name = '')
+            GameWindow(window_name = '')
 
     def test_when_init_given_window_name_of_only_whitespace_then_raise_value_error(self):
         with self.assertRaises(ValueError):
-            GameWindowManager(window_name = "  ")
+            GameWindow(window_name = "  ")
 
     def test_when_init_given_window_name_of_some_window_then_returns_some_window(self):
-        game_window_manager = GameWindowManager(window_name="some window")
+        game_window_manager = GameWindow(window_name="some window")
         self.assertEqual(game_window_manager.window_name, "some window")
 
     def test_when_bring_window_to_front_given_window_not_found_then_does_not_try_to_bring_window_to_front(self):
-        game_window_manager = GameWindowManager(window_name="some window")
+        game_window_manager = GameWindow(window_name="some window")
         with patch('win32gui.EnumWindows') as mock_enumwindows:
             def mock_enum_windows_side_effect(callback, extra):
                 callback("other window", extra)
@@ -50,7 +50,7 @@ class TestGameWindowManager(unittest.TestCase):
             win32gui.SetForegroundWindow.assert_not_called()
     
     def test_when_bring_window_to_front_given_window_found_then_brings_window_to_front(self):
-        game_window_manager = GameWindowManager(window_name="some window")
+        game_window_manager = GameWindow(window_name="some window")
         with patch('win32gui.EnumWindows') as mock_enumwindows:
             def mock_enum_windows_side_effect(callback, extra):
                 callback("some window", extra)

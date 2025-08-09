@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pynput.keyboard import Key, Controller
 
 @dataclass
-class CheatEntryManager:
+class CheatEntry:
     delay_between_cheats_in_seconds: float = 0
 
     def __post_init__(self):

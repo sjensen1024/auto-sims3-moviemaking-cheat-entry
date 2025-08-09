@@ -1,8 +1,8 @@
 import definitions
 import yaml
 from src.configuration import Configuration
-from src.cheat_entry_manager import CheatEntryManager
-from src.game_window_manager import GameWindowManager
+from src.cheat_entry import CheatEntry
+from src.game_window import GameWindow
 from src.countdown import Countdown
 
 class Processor:
@@ -11,11 +11,11 @@ class Processor:
 
     def run(self):
         self.configuration = Configuration(**self.__get_configuration_file_attributes())
-        self.cheat_entry = CheatEntryManager(delay_between_cheats_in_seconds=self.configuration.delay_between_cheats_in_seconds)
+        self.cheat_entry = CheatEntry(delay_between_cheats_in_seconds=self.configuration.delay_between_cheats_in_seconds)
         self.countdown = Countdown(total_seconds=self.configuration.countdown_in_seconds)
         if self.configuration.should_auto_open_window:
-            self.game_window_manager = GameWindowManager(window_name=self.configuration.window_name)
-            self.game_window_manager.bring_window_to_front()
+            self.game_window = GameWindow(window_name=self.configuration.window_name)
+            self.game_window.bring_window_to_front()
         self.countdown.start()
         for cheat in self.configuration.cheats_to_enter:
             self.cheat_entry.enter_cheat(cheat)
