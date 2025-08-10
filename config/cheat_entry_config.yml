@@ -1,5 +1,5 @@
 delay_between_cheats_in_seconds: 0.25
-countdown_in_seconds: 5
+countdown_in_seconds: 10
 should_auto_open_window: true
 window_name: 'the sims 3'
 cheats_to_enter:
