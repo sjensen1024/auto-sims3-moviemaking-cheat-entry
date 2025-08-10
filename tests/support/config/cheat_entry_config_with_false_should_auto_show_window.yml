@@ -1,0 +1,7 @@
+delay_between_cheats_in_seconds: 0.5
+countdown_in_seconds: 5
+should_auto_open_window: false
+window_name: 'my window'
+cheats_to_enter:
+  - "cheat 1"
+  - "cheat 2"

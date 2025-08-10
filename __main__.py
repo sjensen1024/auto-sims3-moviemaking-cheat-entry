@@ -1,3 +1,3 @@
-from src.processor import Processor
+from src.process import Process
 
-Processor().run()
+Process().run()

@@ -5,7 +5,7 @@ from src.cheat_entry import CheatEntry
 from src.game_window import GameWindow
 from src.countdown import Countdown
 
-class Processor:
+class Process:
     def __init__(self, config_path_relative_to_project_root = 'config\\cheat_entry_config.yml'):
         self.configuration_file_path = self.__setup_configuration_file_path(config_path_relative_to_project_root)
 
