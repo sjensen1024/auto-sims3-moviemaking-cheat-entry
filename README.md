@@ -42,4 +42,4 @@ into your Sims 3 game.
 - Open your Sims 3 game and go into gameplay mode.
 - Put the game into the background (window key will do this).
 - Ensure there is an input file for your project to read from (see configuration above).
-- Navigate to the root project directory in command prompt and run `python .`
+- Navigate to the root project directory in a command prompt and run `python .`
