@@ -14,7 +14,7 @@ class GameWindow:
         self.not_found_value = "The window could not be found"
 
     def bring_window_to_front(self):
-        found_window = self.__get_window()
+        found_window = self._get_window()
         if found_window == self.not_found_value:
             print(
                 "We could not find a window with a name including '" + 
@@ -25,9 +25,9 @@ class GameWindow:
         win32gui.ShowWindow(found_window, win32con.SW_SHOWNORMAL)
         win32gui.SetForegroundWindow(found_window)
 
-    def __get_window(self):
+    def _get_window(self):
         top_windows = []
-        win32gui.EnumWindows(self.__window_enum_handler, top_windows)
+        win32gui.EnumWindows(self._window_enum_handler, top_windows)
         for i in top_windows:
             if self.window_name.lower() in i[1].lower():
                 return i[0]
@@ -35,5 +35,5 @@ class GameWindow:
         return self.not_found_value
 
 
-    def __window_enum_handler(self, hwnd, top_windows):
+    def _window_enum_handler(self, hwnd, top_windows):
         top_windows.append((hwnd, win32gui.GetWindowText(hwnd)))
