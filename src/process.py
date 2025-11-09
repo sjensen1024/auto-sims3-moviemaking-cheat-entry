@@ -7,10 +7,10 @@ from src.countdown import Countdown
 
 class Process:
     def __init__(self, config_path_relative_to_project_root = 'config\\cheat_entry_config.yml'):
-        self.configuration_file_path = self.__setup_configuration_file_path(config_path_relative_to_project_root)
+        self.configuration_file_path = definitions.ROOT_DIR + "\\" + (config_path_relative_to_project_root)
 
     def run(self):
-        self.configuration = Configuration(**self.__get_configuration_file_attributes())
+        self.configuration = Configuration(**self._get_configuration_file_attributes())
         self.cheat_entry = CheatEntry(delay_between_cheats_in_seconds=self.configuration.delay_between_cheats_in_seconds)
         self.countdown = Countdown(total_seconds=self.configuration.countdown_in_seconds)
         if self.configuration.should_auto_open_window:
@@ -20,11 +20,8 @@ class Process:
         for cheat in self.configuration.cheats_to_enter:
             self.cheat_entry.enter_cheat(cheat)
         print("Done!")
-
-    def __setup_configuration_file_path(self, relative_path):
-        return definitions.ROOT_DIR + "\\" + relative_path
     
-    def __get_configuration_file_attributes(self):
+    def _get_configuration_file_attributes(self):
         with open(self.configuration_file_path, 'r') as stream:
             config_data = yaml.safe_load(stream)
         return config_data
