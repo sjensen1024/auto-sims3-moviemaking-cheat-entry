@@ -26,7 +26,7 @@ into your Sims 3 game.
   what window to look for if you've configured it
   to try to auto-open your Sims 3 game's window.
   It will try to find the first window including the specified text.
-  Its default value is "the sims 3".
+  Its default value is "the sims" to account for expansion packs.
 - `cheats_to_enter` tells the program what cheats to enter.
   It defaults to the following, but you can add whatever you want as long as you follow the correct YAML format:
   - moveObjects on
